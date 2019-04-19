@@ -1,10 +1,12 @@
+package ru.develgame.JNDSWindowsManager;
+
 /* This Source Code Form is subject to the terms of the Mozilla
  * Public License, v. 2.0. If a copy of the MPL was not distributed
  * with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * 
  * Copyright 2019 Ilya Zemskov */
 
-package ru.develgame.JNDSWindowsManager;
+
 
 import nds.pstros.video.NDSGraphics;
 
@@ -17,6 +19,9 @@ public class JNDSDialogForm implements JNDSForm {
     private int posY;
     private int width;
     private int height;
+    
+    public static final int formTitlePanelHeight = 10; 
+    public static final int formTitlePanelBgColor = 0x326690;
 
     public JNDSDialogForm(JNDSForm parent, int posX, int posY, int width, int height) {
         this.posX = posX;
@@ -25,8 +30,16 @@ public class JNDSDialogForm implements JNDSForm {
         this.height = height;
     }
     
-    public void paint(NDSGraphics g) {
+    public void paint(NDSGraphics g) {                
+        //g.setClip(posX, posY, width, height);
         
+        g.setColor(0x000000);
+        g.drawRect(posX, posY, width, height);
+
+        g.setColor(formTitlePanelBgColor);
+        g.fillRect(posX + 1, posY + 1, width - 1, formTitlePanelHeight); 
+        
+       // System.out.println("1");
     }
     
     public int getPosX() {

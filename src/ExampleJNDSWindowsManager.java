@@ -4,10 +4,21 @@
  * 
  * Copyright 2019 Ilya Zemskov */
 
+import ru.develgame.JNDSWindowsManager.JNDSDialogForm;
+import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
+
 /**
  *
  * @author Ilya Zemskov
  */
 public class ExampleJNDSWindowsManager {
-
+    public static void main(String[] args) {
+        JNDSWindowsManager jndsWindowsManager = new JNDSWindowsManager();
+        jndsWindowsManager.addForm(new JNDSDialogForm(
+                null, 10, 10, 
+                240, 
+                168)
+        );
+        jndsWindowsManager.run();                
+    }    
 }
