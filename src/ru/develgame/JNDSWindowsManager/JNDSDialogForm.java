@@ -1,76 +1,49 @@
-package ru.develgame.JNDSWindowsManager;
-
 /* This Source Code Form is subject to the terms of the Mozilla
  * Public License, v. 2.0. If a copy of the MPL was not distributed
  * with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * Copyright 2019 Ilya Zemskov */
 
+package ru.develgame.JNDSWindowsManager;
 
-
+import java.util.Enumeration;
+import java.util.Vector;
 import nds.pstros.video.NDSGraphics;
+import ru.develgame.JNDSWindowsManager.Components.JNDSComponent;
 
 /**
  *
  * @author Ilya Zemskov
  */
 public class JNDSDialogForm implements JNDSForm {
-    private int posX;
-    private int posY;
-    private int width;
-    private int height;
-    
-    public static final int formTitlePanelHeight = 10; 
-    public static final int formTitlePanelBgColor = 0x326690;
+    public static final int FORM_TITLE_PANEL_HEIGHT = 20;
+    public static final int FORM_TITLE_PANEL_BGCOLOR = 0x326690;
 
-    public JNDSDialogForm(JNDSForm parent, int posX, int posY, int width, int height) {
-        this.posX = posX;
-        this.posY = posY;
-        this.width = width;
-        this.height = height;
+    public static final int FORM_POSX = 2;
+    public static final int FORM_POSY = 2;
+    public static final int FORM_WIDTH = 250;
+    public static final int FORM_HEIGHT = 185;
+
+    private Vector ndsComponents = new Vector();
+
+    public JNDSDialogForm(JNDSForm parent) {
     }
-    
-    public void paint(NDSGraphics g) {                
-        //g.setClip(posX, posY, width, height);
-        
+
+    public void addComponent(JNDSComponent ndsComponent) {
+        ndsComponents.addElement(ndsComponent);
+    }
+
+    public void paint(NDSGraphics g) {
         g.setColor(0x000000);
-        g.drawRect(posX, posY, width, height);
+        g.drawRect(FORM_POSX, FORM_POSY, FORM_WIDTH, FORM_HEIGHT);
 
-        g.setColor(formTitlePanelBgColor);
-        g.fillRect(posX + 1, posY + 1, width - 1, formTitlePanelHeight); 
-        
-       // System.out.println("1");
-    }
-    
-    public int getPosX() {
-        return posX;
-    }
+        g.setColor(FORM_TITLE_PANEL_BGCOLOR);
+        g.fillRect(FORM_POSX + 1, FORM_POSY + 1, FORM_WIDTH - 1, FORM_TITLE_PANEL_HEIGHT);
 
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
+        Enumeration elements = ndsComponents.elements();
+        while (elements.hasMoreElements()) {
+            JNDSComponent component = (JNDSComponent) elements.nextElement();
+            component.paint(g);
+        }
     }
 }

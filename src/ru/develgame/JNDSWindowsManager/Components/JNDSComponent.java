@@ -4,7 +4,7 @@
  *
  * Copyright 2019 Ilya Zemskov */
 
-package ru.develgame.JNDSWindowsManager;
+package ru.develgame.JNDSWindowsManager.Components;
 
 import nds.pstros.video.NDSGraphics;
 
@@ -12,6 +12,6 @@ import nds.pstros.video.NDSGraphics;
  *
  * @author Ilya Zemskov
  */
-public interface JNDSForm {
+public interface JNDSComponent {
     void paint(final NDSGraphics g);
 }
