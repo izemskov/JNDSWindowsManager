@@ -6,27 +6,26 @@
 
 package ru.develgame.JNDSWindowsManager.Components;
 
+import nds.TouchPosition;
+import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
 
 /**
  *
  * @author Ilya Zemskov
  */
-public class JNDSLabel implements JNDSComponent {
+public class JNDSLabel extends JNDSAbstractComponent {
     private String text;
     private int color = 0x000000;
-    private int posX;
-    private int posY;
 
     public JNDSLabel(String text, int posX, int posY) {
+        super(posX, posY);
         this.text = text;
-        this.posX = posX;
-        this.posY = posY;
     }
 
-    public void paint(NDSGraphics g) {
+    public void paint(NDSGraphics g, NDSFont fnt) {
         g.setColor(color);
-        g.drawString(text, posX, posY);
+        g.drawString(text, posX, posY + fnt.getHeight());
     }
 
     public String getText() {
@@ -45,19 +44,10 @@ public class JNDSLabel implements JNDSComponent {
         this.color = color;
     }
 
-    public int getPosX() {
-        return posX;
+    public boolean isClicked(TouchPosition tp) {
+        return false;
     }
 
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
+    public void clickEvent(TouchPosition tp) {
     }
 }

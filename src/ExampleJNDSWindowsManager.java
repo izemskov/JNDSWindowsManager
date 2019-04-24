@@ -4,8 +4,11 @@
  *
  * Copyright 2019 Ilya Zemskov */
 
+import nds.TouchPosition;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSClickAction;
+import ru.develgame.JNDSWindowsManager.Components.JNDSButton;
 import ru.develgame.JNDSWindowsManager.Components.JNDSLabel;
-import ru.develgame.JNDSWindowsManager.JNDSDialogForm;
+import ru.develgame.JNDSWindowsManager.Forms.JNDSDialogForm;
 import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 
 /**
@@ -17,7 +20,18 @@ public class ExampleJNDSWindowsManager {
         JNDSWindowsManager jndsWindowsManager = new JNDSWindowsManager();
 
         JNDSDialogForm jndsDialogForm = new JNDSDialogForm(null);
-        jndsDialogForm.addComponent(new JNDSLabel("Hello world!", 100, 100));
+
+        final JNDSLabel jndsLabel = new JNDSLabel("Hello world!", 100, 50);
+        jndsDialogForm.addComponent(jndsLabel);
+
+        JNDSButton jndsButton = new JNDSButton("Test", 120, 100);
+        jndsButton.setClickAction(new JNDSClickAction() {
+            public void action(TouchPosition tp) {
+                jndsLabel.setText("Test!");
+            }
+        });
+
+        jndsDialogForm.addComponent(jndsButton);
 
         jndsWindowsManager.addForm(jndsDialogForm);
         jndsWindowsManager.run();

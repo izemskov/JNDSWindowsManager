@@ -6,6 +6,7 @@
 
 package ru.develgame.JNDSWindowsManager;
 
+import ru.develgame.JNDSWindowsManager.Forms.JNDSForm;
 import java.util.Enumeration;
 import java.util.Vector;
 import nds.Bios;
@@ -22,6 +23,7 @@ import nds.pstros.video.NDSGraphics;
 public class JNDSWindowsManager {
     private Vector ndsForms = new Vector();
     private NDSGraphics g;
+    private NDSFont fnt;
     private TouchPosition tp;
 
     public static final int MAX_SCREEN_WIDTH = 256;
@@ -34,7 +36,7 @@ public class JNDSWindowsManager {
 
         g = new NDSGraphics();
 
-        NDSFont fnt = new NDSFont("system", 0, 12);
+        fnt = new NDSFont("system", 0, 12);
         g.setFont(fnt);
 
         g.setClip(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
@@ -66,7 +68,7 @@ public class JNDSWindowsManager {
         Enumeration elements = ndsForms.elements();
         while (elements.hasMoreElements()) {
             JNDSForm form = (JNDSForm) elements.nextElement();
-            form.paint(g);
+            form.clickEvent(tp);
         }
     }
 
@@ -74,7 +76,7 @@ public class JNDSWindowsManager {
         Enumeration elements = ndsForms.elements();
         while (elements.hasMoreElements()) {
             JNDSForm form = (JNDSForm) elements.nextElement();
-            form.paint(g);
+            form.paint(g, fnt);
         }
     }
 }

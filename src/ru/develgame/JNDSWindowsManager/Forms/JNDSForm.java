@@ -4,7 +4,7 @@
  *
  * Copyright 2019 Ilya Zemskov */
 
-package ru.develgame.JNDSWindowsManager.Components;
+package ru.develgame.JNDSWindowsManager.Forms;
 
 import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
@@ -14,8 +14,7 @@ import nds.pstros.video.NDSGraphics;
  *
  * @author Ilya Zemskov
  */
-public interface JNDSComponent {
+public interface JNDSForm {
     void paint(NDSGraphics g, NDSFont fnt);
-    boolean isClicked(TouchPosition tp);
     void clickEvent(TouchPosition tp);
 }

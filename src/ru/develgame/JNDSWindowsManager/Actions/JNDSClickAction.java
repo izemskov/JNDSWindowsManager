@@ -4,14 +4,14 @@
  *
  * Copyright 2019 Ilya Zemskov */
 
-package ru.develgame.JNDSWindowsManager;
+package ru.develgame.JNDSWindowsManager.Actions;
 
-import nds.pstros.video.NDSGraphics;
+import nds.TouchPosition;
 
 /**
  *
  * @author Ilya Zemskov
  */
-public interface JNDSForm {
-    void paint(final NDSGraphics g);
+public abstract class JNDSClickAction {
+    public abstract void action(TouchPosition tp);
 }

@@ -4,10 +4,12 @@
  *
  * Copyright 2019 Ilya Zemskov */
 
-package ru.develgame.JNDSWindowsManager;
+package ru.develgame.JNDSWindowsManager.Forms;
 
 import java.util.Enumeration;
 import java.util.Vector;
+import nds.TouchPosition;
+import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
 import ru.develgame.JNDSWindowsManager.Components.JNDSComponent;
 
@@ -33,7 +35,7 @@ public class JNDSDialogForm implements JNDSForm {
         ndsComponents.addElement(ndsComponent);
     }
 
-    public void paint(NDSGraphics g) {
+    public void paint(NDSGraphics g, NDSFont fnt) {
         g.setColor(0x000000);
         g.drawRect(FORM_POSX, FORM_POSY, FORM_WIDTH, FORM_HEIGHT);
 
@@ -43,7 +45,16 @@ public class JNDSDialogForm implements JNDSForm {
         Enumeration elements = ndsComponents.elements();
         while (elements.hasMoreElements()) {
             JNDSComponent component = (JNDSComponent) elements.nextElement();
-            component.paint(g);
+            component.paint(g, fnt);
+        }
+    }
+
+    public void clickEvent(TouchPosition tp) {
+        Enumeration elements = ndsComponents.elements();
+        while (elements.hasMoreElements()) {
+            JNDSComponent component = (JNDSComponent) elements.nextElement();
+            if (component.isClicked(tp))
+                component.clickEvent(tp);
         }
     }
 }
