@@ -11,6 +11,7 @@ import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
 import ru.develgame.JNDSWindowsManager.Actions.JNDSClickAction;
 import ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager;
+import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 
 /**
  *
@@ -31,14 +32,12 @@ public class JNDSButton extends JNDSAbstractComponent {
     public JNDSButton(String text, int posX, int posY) {
         super(posX, posY);
         this.text = text;
+
+        width = PADDING_WIDTH * 2 + JNDSWindowsManager.instance().getFnt().getStringWidth(text);
+        height = PADDING_HEIGHT * 2 + JNDSWindowsManager.instance().getFnt().getHeight();
     }
 
     public void paint(NDSGraphics g, NDSFont fnt) {
-        if (width == 0)
-            width = PADDING_WIDTH * 2 + fnt.getStringWidth(text);
-        if (height == 0)
-            height = PADDING_HEIGHT * 2 + fnt.getHeight();
-
         g.setColor(bgColor);
         g.fillRect(
                 posX,
@@ -74,5 +73,13 @@ public class JNDSButton extends JNDSAbstractComponent {
                 ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager.BACKGROUND_REPAINT_EVENT
             );
         }
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

@@ -8,7 +8,8 @@ import nds.TouchPosition;
 import ru.develgame.JNDSWindowsManager.Actions.JNDSClickAction;
 import ru.develgame.JNDSWindowsManager.Components.JNDSButton;
 import ru.develgame.JNDSWindowsManager.Components.JNDSLabel;
-import ru.develgame.JNDSWindowsManager.Forms.JNDSDialogForm;
+import ru.develgame.JNDSWindowsManager.Forms.JNDSComponentsForm;
+import ru.develgame.JNDSWindowsManager.Forms.JNDSKeyboardForm;
 import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 
 /**
@@ -17,10 +18,10 @@ import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
  */
 public class ExampleJNDSWindowsManager {
     public static void main(String[] args) {
-        JNDSDialogForm jndsDialogForm = new JNDSDialogForm(null);
+        JNDSComponentsForm jNDSComponentsForm = new JNDSComponentsForm();
 
         final JNDSLabel jndsLabel = new JNDSLabel("Hello world!", 100, 50);
-        jndsDialogForm.addComponent(jndsLabel);
+        jNDSComponentsForm.addComponent(jndsLabel);
 
         JNDSButton jndsButton = new JNDSButton("Test", 120, 100);
         jndsButton.setClickAction(new JNDSClickAction() {
@@ -29,9 +30,13 @@ public class ExampleJNDSWindowsManager {
             }
         });
 
-        jndsDialogForm.addComponent(jndsButton);
+        jNDSComponentsForm.addComponent(jndsButton);
 
-        JNDSWindowsManager.instance().addForm(jndsDialogForm);
+        JNDSWindowsManager.instance().addForm(jNDSComponentsForm);
+
+        JNDSKeyboardForm jndsKeyboardForm = new JNDSKeyboardForm("Test");
+        JNDSWindowsManager.instance().addForm(jndsKeyboardForm);
+
         JNDSWindowsManager.instance().run();
     }
 }

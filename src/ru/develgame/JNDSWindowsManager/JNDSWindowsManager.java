@@ -29,7 +29,7 @@ public class JNDSWindowsManager {
 
     private Vector ndsForms = new Vector();
     private NDSGraphics g;
-    private NDSFont fnt;
+    private NDSFont fnt = new NDSFont("system", 0, 12);
     private TouchPosition tp;
 
     private int lastTPx = 0;
@@ -47,7 +47,6 @@ public class JNDSWindowsManager {
 
         g = new NDSGraphics();
 
-        fnt = new NDSFont("system", 0, 12);
         g.setFont(fnt);
 
         g.setClip(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
@@ -107,10 +106,13 @@ public class JNDSWindowsManager {
             isNeedRepaintBackground = false;
         }
 
-        Enumeration elements = ndsForms.elements();
-        while (elements.hasMoreElements()) {
-            JNDSForm form = (JNDSForm) elements.nextElement();
+        if (!ndsForms.isEmpty()) {
+            JNDSForm form = (JNDSForm) ndsForms.lastElement();
             form.paint(g, fnt);
         }
+    }
+
+    public NDSFont getFnt() {
+        return fnt;
     }
 }

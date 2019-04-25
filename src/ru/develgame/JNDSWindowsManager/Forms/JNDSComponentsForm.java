@@ -17,7 +17,7 @@ import ru.develgame.JNDSWindowsManager.Components.JNDSComponent;
  *
  * @author Ilya Zemskov
  */
-public class JNDSDialogForm implements JNDSForm {
+public class JNDSComponentsForm implements JNDSForm {
     public static final int FORM_TITLE_PANEL_HEIGHT = 20;
     public static final int FORM_TITLE_PANEL_BGCOLOR = 0x326690;
 
@@ -26,10 +26,7 @@ public class JNDSDialogForm implements JNDSForm {
     public static final int FORM_WIDTH = 250;
     public static final int FORM_HEIGHT = 185;
 
-    private Vector ndsComponents = new Vector();
-
-    public JNDSDialogForm(JNDSForm parent) {
-    }
+    protected Vector ndsComponents = new Vector();
 
     public void addComponent(JNDSComponent ndsComponent) {
         ndsComponents.addElement(ndsComponent);
