@@ -15,16 +15,27 @@ import nds.TouchPosition;
 import nds.Video;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
+import ru.develgame.JNDSWindowsManager.Events.JNDSEvent;
+import ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager;
 
 /**
  *
  * @author Ilya Zemskov
  */
 public class JNDSWindowsManager {
+    private JNDSWindowsManager() {}
+    private static final JNDSWindowsManager instance = new JNDSWindowsManager();
+    public static JNDSWindowsManager instance() {return instance;}
+
     private Vector ndsForms = new Vector();
     private NDSGraphics g;
     private NDSFont fnt;
     private TouchPosition tp;
+
+    private int lastTPx = 0;
+    private int lastTPy = 0;
+
+    private boolean isNeedRepaintBackground = false;
 
     public static final int MAX_SCREEN_WIDTH = 256;
     public static final int MAX_SCREEN_HEIGHT = 192;
@@ -46,12 +57,25 @@ public class JNDSWindowsManager {
 
         tp = new TouchPosition();
 
+        JNDSEventsManager.instance().subscribeOnEvent(
+                ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager.BACKGROUND_REPAINT_EVENT,
+                new JNDSEvent() {
+                        public void action() {
+                            isNeedRepaintBackground = true;
+                        }
+                }
+        );
+
         int keys  = Key.held();
         while ((keys & Key.START) == 0) {
             tp.update();
 
             if (tp.px != 0 && tp.py != 0)
                 touchEvents();
+            else {
+                lastTPx = 0;
+                lastTPy = 0;
+            }
 
             Key.scan();
             keys = Key.held();
@@ -68,11 +92,21 @@ public class JNDSWindowsManager {
         Enumeration elements = ndsForms.elements();
         while (elements.hasMoreElements()) {
             JNDSForm form = (JNDSForm) elements.nextElement();
-            form.clickEvent(tp);
+            if (lastTPx != tp.px || lastTPy != tp.py)
+                form.clickEvent(tp);
         }
+
+        lastTPx = tp.px;
+        lastTPy = tp.py;
     }
 
     public void paint() {
+        if (isNeedRepaintBackground) {
+            g.setColor(0xFFFFFF);
+            g.fillRect(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
+            isNeedRepaintBackground = false;
+        }
+
         Enumeration elements = ndsForms.elements();
         while (elements.hasMoreElements()) {
             JNDSForm form = (JNDSForm) elements.nextElement();

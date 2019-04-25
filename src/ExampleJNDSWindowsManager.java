@@ -17,8 +17,6 @@ import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
  */
 public class ExampleJNDSWindowsManager {
     public static void main(String[] args) {
-        JNDSWindowsManager jndsWindowsManager = new JNDSWindowsManager();
-
         JNDSDialogForm jndsDialogForm = new JNDSDialogForm(null);
 
         final JNDSLabel jndsLabel = new JNDSLabel("Hello world!", 100, 50);
@@ -33,7 +31,7 @@ public class ExampleJNDSWindowsManager {
 
         jndsDialogForm.addComponent(jndsButton);
 
-        jndsWindowsManager.addForm(jndsDialogForm);
-        jndsWindowsManager.run();
+        JNDSWindowsManager.instance().addForm(jndsDialogForm);
+        JNDSWindowsManager.instance().run();
     }
 }

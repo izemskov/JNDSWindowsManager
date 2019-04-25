@@ -10,6 +10,7 @@ import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
 import ru.develgame.JNDSWindowsManager.Actions.JNDSClickAction;
+import ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager;
 
 /**
  *
@@ -67,7 +68,11 @@ public class JNDSButton extends JNDSAbstractComponent {
     }
 
     public void clickEvent(TouchPosition tp) {
-        if (clickAction != null)
+        if (clickAction != null) {
             clickAction.action(tp);
+            JNDSEventsManager.instance().sentEvent(
+                ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager.BACKGROUND_REPAINT_EVENT
+            );
+        }
     }
 }
