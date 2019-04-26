@@ -15,12 +15,13 @@ import nds.pstros.video.NDSGraphics;
  * @author Ilya Zemskov
  */
 public class JNDSLabel extends JNDSAbstractComponent {
-    private String text;
+    private String text = "";
     private int color = 0x000000;
 
     public JNDSLabel(String text, int posX, int posY) {
         super(posX, posY);
-        this.text = text;
+        if (text != null)
+            this.text = text;
     }
 
     public void paint(NDSGraphics g, NDSFont fnt) {
@@ -33,7 +34,8 @@ public class JNDSLabel extends JNDSAbstractComponent {
     }
 
     public void setText(String text) {
-        this.text = text;
+        if (text != null)
+            this.text = text;
     }
 
     public int getColor() {

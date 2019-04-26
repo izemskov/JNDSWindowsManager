@@ -19,7 +19,7 @@ import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
  */
 public class JNDSButton extends JNDSAbstractComponent {
     private JNDSClickAction clickAction;
-    private String text;
+    private String text = "";
     private int color = 0xFFFFFF;
     private int bgColor = 0x326690;
 
@@ -31,7 +31,8 @@ public class JNDSButton extends JNDSAbstractComponent {
 
     public JNDSButton(String text, int posX, int posY) {
         super(posX, posY);
-        this.text = text;
+        if (text != null)
+            this.text = text;
 
         width = PADDING_WIDTH * 2 + JNDSWindowsManager.instance().getFnt().getStringWidth(text);
         height = PADDING_HEIGHT * 2 + JNDSWindowsManager.instance().getFnt().getHeight();
@@ -59,7 +60,8 @@ public class JNDSButton extends JNDSAbstractComponent {
     }
 
     public void setText(String text) {
-        this.text = text;
+        if (text != null)
+            this.text = text;
     }
 
     public boolean isClicked(TouchPosition tp) {

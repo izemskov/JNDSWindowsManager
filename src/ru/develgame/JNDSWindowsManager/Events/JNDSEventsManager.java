@@ -18,7 +18,7 @@ public class JNDSEventsManager {
     private static final JNDSEventsManager instance = new JNDSEventsManager();
     public static JNDSEventsManager instance() {return instance;}
 
-    private Vector listeners = new Vector();
+    private final Vector listeners = new Vector();
 
     public static final String BACKGROUND_REPAINT_EVENT = "backgroundRepaintEvent";
 

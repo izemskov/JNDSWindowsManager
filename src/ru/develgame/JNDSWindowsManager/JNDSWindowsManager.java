@@ -27,9 +27,9 @@ public class JNDSWindowsManager {
     private static final JNDSWindowsManager instance = new JNDSWindowsManager();
     public static JNDSWindowsManager instance() {return instance;}
 
-    private Vector ndsForms = new Vector();
+    private final Vector ndsForms = new Vector();
     private NDSGraphics g;
-    private NDSFont fnt = new NDSFont("system", 0, 12);
+    private final NDSFont fnt = new NDSFont("system", 0, 12);
     private TouchPosition tp;
 
     private int lastTPx = 0;

@@ -26,7 +26,7 @@ public class JNDSComponentsForm implements JNDSForm {
     public static final int FORM_WIDTH = 250;
     public static final int FORM_HEIGHT = 185;
 
-    protected Vector ndsComponents = new Vector();
+    protected final Vector ndsComponents = new Vector();
 
     public void addComponent(JNDSComponent ndsComponent) {
         ndsComponents.addElement(ndsComponent);
