@@ -28,100 +28,158 @@ public class JNDSWindowsManager {
     public static JNDSWindowsManager instance() {return instance;}
 
     private final Vector ndsForms = new Vector();
-    private NDSGraphics g;
+    private NDSGraphics graphic;
     private final NDSFont fnt = new NDSFont("system", 0, 12);
     private TouchPosition tp;
 
-    private int lastTPx = 0;
-    private int lastTPy = 0;
-
-    private boolean isNeedRepaintBackground = false;
+    private boolean needRepaintBackground = false;
 
     public static final int MAX_SCREEN_WIDTH = 256;
     public static final int MAX_SCREEN_HEIGHT = 192;
+
+    public NDSGraphics getGraphic() {
+        return graphic;
+    }
+
+    public TouchPosition getTp() {
+        return tp;
+    }
+
+    public boolean isNeedRepaintBackground() {
+        synchronized (instance) {
+            return needRepaintBackground;
+        }
+    }
+
+    public void setNeedRepaintBackground(boolean needRepaintBackground) {
+        synchronized (instance) {
+            this.needRepaintBackground = needRepaintBackground;
+        }
+    }
 
     public void run() {
         Video.lcdSwap();
         Video.initVideo();
         int videoAddr = Video.BG_BMP_RAM(0);
 
-        g = new NDSGraphics();
+        graphic = new NDSGraphics();
 
-        g.setFont(fnt);
+        graphic.setFont(fnt);
 
-        g.setClip(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
+        graphic.setClip(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
 
-        g.setColor(0xFFFFFF);
-        g.fillRect(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
+        graphic.setColor(0xFFFFFF);
+        graphic.fillRect(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
 
         tp = new TouchPosition();
 
-        JNDSEventsManager.instance().subscribeOnEvent(
-                ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager.BACKGROUND_REPAINT_EVENT,
+        JNDSEventsManager.instance().subscribeOnEvent(ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager.BACKGROUND_REPAINT_EVENT,
                 new JNDSEvent() {
                         public void action() {
-                            isNeedRepaintBackground = true;
+                            needRepaintBackground = true;
                         }
                 }
         );
 
-        int keys  = Key.held();
-        while ((keys & Key.START) == 0) {
-            tp.update();
-
-            if (tp.px != 0 && tp.py != 0)
-                touchEvents();
-            else {
-                lastTPx = 0;
-                lastTPy = 0;
-            }
-
-            Key.scan();
-            keys = Key.held();
-            Bios.swiWaitForVBlank();
-            paint();
-        }
+        MainLoop mainLoop = new MainLoop();
+        Thread thread = new Thread(mainLoop);
+        thread.run();
     }
 
     public void addForm(JNDSForm ndsForm) {
-        ndsForms.addElement(ndsForm);
+        synchronized (instance) {
+            ndsForms.addElement(ndsForm);
+        }
     }
 
     public void removeForm(JNDSForm ndsForm) {
-        ndsForms.removeElement(ndsForm);
+        synchronized (instance) {
+            ndsForms.removeElement(ndsForm);
+        }
     }
 
-    public void touchEvents() {
-        Enumeration elements = ndsForms.elements();
-        while (elements.hasMoreElements()) {
-            JNDSForm form = (JNDSForm) elements.nextElement();
-            if (lastTPx != tp.px || lastTPy != tp.py)
-                form.clickEvent(tp);
-        }
+    public Vector getNdsForms() {
+        synchronized (instance) {
+            Vector vector = new Vector();
 
-        lastTPx = tp.px;
-        lastTPy = tp.py;
-    }
-
-    public void paint() {
-        if (isNeedRepaintBackground) {
-            g.setColor(0xFFFFFF);
-            g.fillRect(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
-            isNeedRepaintBackground = false;
-        }
-
-        if (!ndsForms.isEmpty()) {
-            for (int i = ndsForms.size() - 1; i >= 0; i--) {
-                JNDSForm form = (JNDSForm) ndsForms.elementAt(i);
-                if (form.isVisible()) {
-                    form.paint(g, fnt);
-                    break;
-                }
+            Enumeration elements = ndsForms.elements();
+            while (elements.hasMoreElements()) {
+                JNDSForm form = (JNDSForm) elements.nextElement();
+                vector.addElement(form);
             }
+
+            return vector;
         }
     }
 
     public NDSFont getFnt() {
         return fnt;
+    }
+
+    private static class MainLoop implements Runnable {
+        private int lastTPx = 0;
+        private int lastTPy = 0;
+
+        public MainLoop() {
+        }
+
+        private void touchEvents() {
+            Vector ndsForms = JNDSWindowsManager.instance().getNdsForms();
+            Enumeration elements = ndsForms.elements();
+            while (elements.hasMoreElements()) {
+                JNDSForm form = (JNDSForm) elements.nextElement();
+                if (lastTPx != JNDSWindowsManager.instance().getTp().px ||
+                        lastTPy != JNDSWindowsManager.instance().getTp().py)
+                {
+                    form.clickEvent(JNDSWindowsManager.instance().getTp());
+                }
+            }
+
+            lastTPx = JNDSWindowsManager.instance().getTp().px;
+            lastTPy = JNDSWindowsManager.instance().getTp().py;
+        }
+
+        public void paint() {
+            NDSGraphics graphic = JNDSWindowsManager.instance().getGraphic();
+            if (JNDSWindowsManager.instance().isNeedRepaintBackground()) {
+                graphic.setColor(0xFFFFFF);
+                graphic.fillRect(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
+                JNDSWindowsManager.instance().setNeedRepaintBackground(false);
+            }
+
+            Vector ndsForms = JNDSWindowsManager.instance().getNdsForms();
+
+            if (!ndsForms.isEmpty()) {
+                for (int i = ndsForms.size() - 1; i >= 0; i--) {
+                    JNDSForm form = (JNDSForm) ndsForms.elementAt(i);
+                    if (form.isVisible()) {
+                        form.paint(graphic, JNDSWindowsManager.instance().getFnt());
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void run() {
+            int keys  = Key.held();
+            while ((keys & Key.START) == 0) {
+                JNDSWindowsManager.instance().getTp().update();
+
+                if (JNDSWindowsManager.instance().getTp().px != 0 &&
+                        JNDSWindowsManager.instance().getTp().py != 0)
+                {
+                    touchEvents();
+                }
+                else {
+                    lastTPx = 0;
+                    lastTPy = 0;
+                }
+
+                Key.scan();
+                keys = Key.held();
+                Bios.swiWaitForVBlank();
+                paint();
+            }
+        }
     }
 }
