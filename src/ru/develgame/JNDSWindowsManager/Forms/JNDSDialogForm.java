@@ -6,16 +6,14 @@
 
 package ru.develgame.JNDSWindowsManager.Forms;
 
-import nds.TouchPosition;
-import nds.pstros.video.NDSFont;
-import nds.pstros.video.NDSGraphics;
-
 /**
  *
  * @author Ilya Zemskov
  */
-public interface JNDSForm {
-    void paint(NDSGraphics g, NDSFont fnt);
-    void clickEvent(TouchPosition tp);
-    boolean isVisible();
+public class JNDSDialogForm extends JNDSComponentsForm {
+    protected boolean answer = false;
+
+    public boolean isAnswer() {
+        return answer;
+    }
 }

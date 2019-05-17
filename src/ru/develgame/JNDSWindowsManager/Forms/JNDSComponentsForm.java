@@ -28,6 +28,16 @@ public class JNDSComponentsForm implements JNDSForm {
 
     protected final Vector ndsComponents = new Vector();
 
+    protected boolean visible = false;
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
     public void addComponent(JNDSComponent ndsComponent) {
         ndsComponents.addElement(ndsComponent);
     }

@@ -87,6 +87,10 @@ public class JNDSWindowsManager {
         ndsForms.addElement(ndsForm);
     }
 
+    public void removeForm(JNDSForm ndsForm) {
+        ndsForms.removeElement(ndsForm);
+    }
+
     public void touchEvents() {
         Enumeration elements = ndsForms.elements();
         while (elements.hasMoreElements()) {
@@ -107,8 +111,13 @@ public class JNDSWindowsManager {
         }
 
         if (!ndsForms.isEmpty()) {
-            JNDSForm form = (JNDSForm) ndsForms.lastElement();
-            form.paint(g, fnt);
+            for (int i = ndsForms.size() - 1; i >= 0; i--) {
+                JNDSForm form = (JNDSForm) ndsForms.elementAt(i);
+                if (form.isVisible()) {
+                    form.paint(g, fnt);
+                    break;
+                }
+            }
         }
     }
 

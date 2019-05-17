@@ -26,16 +26,16 @@ public class ExampleJNDSWindowsManager {
         JNDSButton jndsButton = new JNDSButton("Test", 120, 100);
         jndsButton.setClickAction(new JNDSClickAction() {
             public void action(TouchPosition tp) {
-                jndsLabel.setText("Test!");
+                JNDSKeyboardForm jndsKeyboardForm = new JNDSKeyboardForm("Write a text");
+                JNDSWindowsManager.instance().addForm(jndsKeyboardForm);
+                jndsKeyboardForm.setVisible(true);
             }
         });
 
         jNDSComponentsForm.addComponent(jndsButton);
 
         JNDSWindowsManager.instance().addForm(jNDSComponentsForm);
-
-        JNDSKeyboardForm jndsKeyboardForm = new JNDSKeyboardForm("Test");
-        JNDSWindowsManager.instance().addForm(jndsKeyboardForm);
+        jNDSComponentsForm.setVisible(true);
 
         JNDSWindowsManager.instance().run();
     }

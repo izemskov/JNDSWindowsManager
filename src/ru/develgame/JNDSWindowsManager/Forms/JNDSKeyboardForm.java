@@ -17,7 +17,7 @@ import ru.develgame.JNDSWindowsManager.Components.JNDSLabel;
  *
  * @author Ilya Zemskov
  */
-public class JNDSKeyboardForm extends JNDSComponentsForm {
+public class JNDSKeyboardForm extends JNDSDialogForm {
     private final String[] text = new String[1];
     private final JNDSLabel jNDSLabel;
     private int cursorPos = 0;
@@ -96,6 +96,27 @@ public class JNDSKeyboardForm extends JNDSComponentsForm {
         currentPosX += addButton("b", currentPosX, currentPosY) + 1;
         currentPosX += addButton("n", currentPosX, currentPosY) + 1;
         currentPosX += addButton("m", currentPosX, currentPosY) + 1;
+
+        currentPosY += jndsButton.getHeight() + 1;
+        currentPosX = LEFT_BORDER_X;
+        JNDSButton jndsButtonOK = new JNDSButton("OK", currentPosX, currentPosY);
+        jndsButtonOK.setClickAction(new JNDSClickAction() {
+            public void action(TouchPosition tp) {
+                answer = true;
+                visible = false;
+            }
+        });
+        addComponent(jndsButtonOK);
+
+        currentPosX += jndsButtonOK.getWidth() + 1;
+        JNDSButton jndsButtonCancel = new JNDSButton("Cancel", currentPosX, currentPosY);
+        jndsButtonCancel.setClickAction(new JNDSClickAction() {
+            public void action(TouchPosition tp) {
+                answer = false;
+                visible = false;
+            }
+        });
+        addComponent(jndsButtonCancel);
     }
 
     private int addButton(String symbol, int currentPosX, int currentPosY) {
