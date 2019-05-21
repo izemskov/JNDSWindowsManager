@@ -5,7 +5,7 @@
  * Copyright 2019 Ilya Zemskov */
 
 import nds.TouchPosition;
-import ru.develgame.JNDSWindowsManager.Actions.JNDSClickAction;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSActionImpl;
 import ru.develgame.JNDSWindowsManager.Components.JNDSButton;
 import ru.develgame.JNDSWindowsManager.Components.JNDSLabel;
 import ru.develgame.JNDSWindowsManager.Forms.JNDSComponentsForm;
@@ -24,13 +24,18 @@ public class ExampleJNDSWindowsManager {
         jNDSComponentsForm.addComponent(jndsLabel);
 
         JNDSButton jndsButton = new JNDSButton("Test", 120, 100);
-        jndsButton.setClickAction(new JNDSClickAction() {
-            public void action(TouchPosition tp) {
+        JNDSActionImpl jndsActionImpl = new JNDSActionImpl() {
+            public void action() {
                 JNDSKeyboardForm jndsKeyboardForm = new JNDSKeyboardForm("Write a text");
                 JNDSWindowsManager.instance().addForm(jndsKeyboardForm);
                 jndsKeyboardForm.setVisible(true);
+                if (jndsKeyboardForm.isAnswer()) {
+                    jndsLabel.setText(jndsKeyboardForm.getText());
+                }
+                super.action();
             }
-        });
+        };
+        jndsButton.setClickAction(jndsActionImpl);
 
         jNDSComponentsForm.addComponent(jndsButton);
 

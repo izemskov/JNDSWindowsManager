@@ -6,10 +6,9 @@
 
 package ru.develgame.JNDSWindowsManager.Forms;
 
-import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
-import ru.develgame.JNDSWindowsManager.Actions.JNDSClickAction;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSActionImpl;
 import ru.develgame.JNDSWindowsManager.Components.JNDSButton;
 import ru.develgame.JNDSWindowsManager.Components.JNDSLabel;
 
@@ -100,20 +99,22 @@ public class JNDSKeyboardForm extends JNDSDialogForm {
         currentPosY += jndsButton.getHeight() + 1;
         currentPosX = LEFT_BORDER_X;
         JNDSButton jndsButtonOK = new JNDSButton("OK", currentPosX, currentPosY);
-        jndsButtonOK.setClickAction(new JNDSClickAction() {
-            public void action(TouchPosition tp) {
+        jndsButtonOK.setClickAction(new JNDSActionImpl() {
+            public void action() {
                 answer = true;
-                visible = false;
+                setVisible(false);
+                super.action();
             }
         });
         addComponent(jndsButtonOK);
 
         currentPosX += jndsButtonOK.getWidth() + 1;
         JNDSButton jndsButtonCancel = new JNDSButton("Cancel", currentPosX, currentPosY);
-        jndsButtonCancel.setClickAction(new JNDSClickAction() {
-            public void action(TouchPosition tp) {
+        jndsButtonCancel.setClickAction(new JNDSActionImpl() {
+            public void action() {
                 answer = false;
-                visible = false;
+                setVisible(false);
+                super.action();
             }
         });
         addComponent(jndsButtonCancel);
@@ -157,7 +158,7 @@ public class JNDSKeyboardForm extends JNDSDialogForm {
                 CURSOR_HEIGHT);
     }
 
-    private static class KeyClickAction extends JNDSClickAction {
+    private static class KeyClickAction extends JNDSActionImpl {
         private final String symbol;
         private final JNDSKeyboardForm jNDSKeyboardForm;
 
@@ -166,8 +167,9 @@ public class JNDSKeyboardForm extends JNDSDialogForm {
             this.symbol = symbol;
         }
 
-        public void action(TouchPosition tp) {
+        public void action() {
             jNDSKeyboardForm.setText(jNDSKeyboardForm.getText() + symbol);
+            super.action();
         }
     }
 }

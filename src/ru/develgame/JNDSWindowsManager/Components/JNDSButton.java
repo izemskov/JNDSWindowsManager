@@ -9,7 +9,7 @@ package ru.develgame.JNDSWindowsManager.Components;
 import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
-import ru.develgame.JNDSWindowsManager.Actions.JNDSClickAction;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSActionImpl;
 import ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager;
 import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 
@@ -18,7 +18,7 @@ import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
  * @author Ilya Zemskov
  */
 public class JNDSButton extends JNDSAbstractComponent {
-    private JNDSClickAction clickAction;
+    private JNDSActionImpl clickAction;
     private String text = "";
     private int color = 0xFFFFFF;
     private int bgColor = 0x326690;
@@ -51,7 +51,7 @@ public class JNDSButton extends JNDSAbstractComponent {
         g.drawString(text, posX + PADDING_WIDTH, posY + fnt.getHeight());
     }
 
-    public void setClickAction(JNDSClickAction clickAction) {
+    public void setClickAction(JNDSActionImpl clickAction) {
         this.clickAction = clickAction;
     }
 
@@ -70,10 +70,7 @@ public class JNDSButton extends JNDSAbstractComponent {
 
     public void clickEvent(TouchPosition tp) {
         if (clickAction != null) {
-            clickAction.action(tp);
-            JNDSEventsManager.instance().sentEvent(
-                ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager.BACKGROUND_REPAINT_EVENT
-            );
+            JNDSWindowsManager.instance().addActionToQueue(clickAction);
         }
     }
 

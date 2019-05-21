@@ -6,12 +6,12 @@
 
 package ru.develgame.JNDSWindowsManager.Actions;
 
-import nds.TouchPosition;
-
 /**
  *
  * @author Ilya Zemskov
  */
 public interface JNDSAction {
-    void action(TouchPosition tp);
+    void action();
+    int getActionProcessStatus();
+    void startAction();
 }

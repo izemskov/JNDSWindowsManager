@@ -16,4 +16,22 @@ public class JNDSDialogForm extends JNDSComponentsForm {
     public boolean isAnswer() {
         return answer;
     }
+
+    public void setVisible(boolean visible) {
+        if (visible)
+            System.out.println("Start visible");
+
+        super.setVisible(visible);
+
+        while (isVisible()) {
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException ex) {
+            }
+        }
+
+        if (visible)
+            System.out.println("Stop visible");        
+    }
 }
