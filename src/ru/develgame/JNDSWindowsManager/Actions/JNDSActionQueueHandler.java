@@ -28,7 +28,7 @@ public class JNDSActionQueueHandler implements Runnable {
 
             Enumeration elements = actionQueue.elements();
             while (elements.hasMoreElements()) {
-                JNDSAction action = (JNDSAction) elements.nextElement();
+                JNDSActionWrapper action = (JNDSActionWrapper) elements.nextElement();
                 vector.addElement(action);
             }
 
@@ -38,11 +38,11 @@ public class JNDSActionQueueHandler implements Runnable {
 
     public void addActionToQueue(JNDSAction action) {
         synchronized (this) {
-            actionQueue.addElement(action);
+            actionQueue.addElement(new JNDSActionWrapper(action));
         }
     }
 
-    private void removeActionFromQueue(JNDSAction action) {
+    private void removeActionFromQueue(JNDSActionWrapper action) {
         synchronized (this) {
             actionQueue.removeElement(action);
         }
@@ -64,15 +64,15 @@ public class JNDSActionQueueHandler implements Runnable {
         while (!isStop()) {
             Enumeration elements = getActionQueue().elements();
             while (elements.hasMoreElements()) {
-                final JNDSAction action = (JNDSAction) elements.nextElement();
+                final JNDSActionWrapper action = (JNDSActionWrapper) elements.nextElement();
                 if (action.getActionProcessStatus() == ACTION_PROCESS_STATUS_FINISH) {
                     removeActionFromQueue(action);
                 }
                 else if (action.getActionProcessStatus() == ACTION_PROCESS_STATUS_WAIT) {
-                    action.startAction();
+                    action.setActionStatus(ACTION_PROCESS_STATUS_START);
                     new Thread(new Runnable() {
                         public void run() {
-                            action.action();
+                            action.runAction();
                         }
                     }).start();
                 }

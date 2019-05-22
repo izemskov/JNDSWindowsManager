@@ -12,6 +12,4 @@ package ru.develgame.JNDSWindowsManager.Actions;
  */
 public interface JNDSAction {
     void action();
-    int getActionProcessStatus();
-    void startAction();
 }

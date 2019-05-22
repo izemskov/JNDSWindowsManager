@@ -17,8 +17,6 @@ import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
 import ru.develgame.JNDSWindowsManager.Actions.JNDSAction;
 import ru.develgame.JNDSWindowsManager.Actions.JNDSActionQueueHandler;
-import ru.develgame.JNDSWindowsManager.Events.JNDSEvent;
-import ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager;
 
 /**
  *
@@ -39,7 +37,7 @@ public class JNDSWindowsManager {
     private int lastTPx = 0;
     private int lastTPy = 0;
 
-    private boolean isNeedRepaintBackground = false;
+    private boolean needRepaint = true;
 
     public static final int MAX_SCREEN_WIDTH = 256;
     public static final int MAX_SCREEN_HEIGHT = 192;
@@ -60,15 +58,6 @@ public class JNDSWindowsManager {
 
         tp = new TouchPosition();
 
-        JNDSEventsManager.instance().subscribeOnEvent(
-                ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager.BACKGROUND_REPAINT_EVENT,
-                new JNDSEvent() {
-                        public void action() {
-                            isNeedRepaintBackground = true;
-                        }
-                }
-        );
-
         jndsActionQueueHandler = new JNDSActionQueueHandler();
         jndsActionQueueHandlerThread = new Thread(jndsActionQueueHandler);
         jndsActionQueueHandlerThread.start();
@@ -77,7 +66,7 @@ public class JNDSWindowsManager {
         while ((keys & Key.START) == 0) {
             tp.update();
 
-            if (tp.px != 0 && tp.py != 0)
+            if (tp.px != 0 || tp.py != 0)
                 touchEvents();
             else {
                 lastTPx = 0;
@@ -104,40 +93,87 @@ public class JNDSWindowsManager {
     }
 
     public void addForm(JNDSForm ndsForm) {
-        ndsForms.addElement(ndsForm);
+        synchronized (this) {
+            ndsForms.addElement(ndsForm);
+        }
     }
 
     public void removeForm(JNDSForm ndsForm) {
-        ndsForms.removeElement(ndsForm);
+        synchronized (this) {
+            ndsForms.removeElement(ndsForm);
+        }
+    }
+
+    public Vector getNdsForms() {
+        synchronized (this) {
+            Vector vector = new Vector();
+
+            Enumeration elements = ndsForms.elements();
+            while (elements.hasMoreElements()) {
+                JNDSForm action = (JNDSForm) elements.nextElement();
+                vector.addElement(action);
+            }
+
+            return vector;
+        }
     }
 
     public void touchEvents() {
-        Enumeration elements = ndsForms.elements();
-        while (elements.hasMoreElements()) {
-            JNDSForm form = (JNDSForm) elements.nextElement();
-            if (lastTPx != tp.px || lastTPy != tp.py)
-                form.clickEvent(tp);
-        }
+        if (lastTPx != tp.px || lastTPy != tp.py) {
+            Vector ndsFormsCopy = getNdsForms();
+            if (!ndsFormsCopy.isEmpty()) {
+                for (int i = ndsFormsCopy.size() - 1; i >= 0; i--) {
+                    JNDSForm form = (JNDSForm) ndsFormsCopy.elementAt(i);
+                    if (form.isVisible()) {
+                        form.clickEvent(tp);
+                        break;
+                    }
+                }
+            }
 
-        lastTPx = tp.px;
-        lastTPy = tp.py;
+            lastTPx = tp.px;
+            lastTPy = tp.py;
+        }
+    }
+
+    public boolean isNeedRepaint() {
+        synchronized (this) {
+            return needRepaint;
+        }
+    }
+
+    public void repaint() {
+        synchronized (this) {
+            needRepaint = true;
+            System.out.println("Need repaint");
+        }
+    }
+
+    public void setNeedRepaint(boolean needRepaint) {
+        synchronized (this) {
+            this.needRepaint = needRepaint;
+        }
     }
 
     public void paint() {
-        if (isNeedRepaintBackground) {
+        if (isNeedRepaint()) {
+            System.out.println("Repaint");
             g.setColor(0xFFFFFF);
             g.fillRect(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
-            isNeedRepaintBackground = false;
-        }
 
-        if (!ndsForms.isEmpty()) {
-            for (int i = ndsForms.size() - 1; i >= 0; i--) {
-                JNDSForm form = (JNDSForm) ndsForms.elementAt(i);
-                if (form.isVisible()) {
-                    form.paint(g, fnt);
-                    break;
+            Vector ndsFormsCopy = getNdsForms();
+
+            if (!ndsFormsCopy.isEmpty()) {
+                for (int i = ndsFormsCopy.size() - 1; i >= 0; i--) {
+                    JNDSForm form = (JNDSForm) ndsFormsCopy.elementAt(i);
+                    if (form.isVisible()) {
+                        form.paint(g, fnt);
+                        break;
+                    }
                 }
             }
+
+            setNeedRepaint(false);
         }
     }
 

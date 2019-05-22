@@ -9,8 +9,7 @@ package ru.develgame.JNDSWindowsManager.Components;
 import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
-import ru.develgame.JNDSWindowsManager.Actions.JNDSActionImpl;
-import ru.develgame.JNDSWindowsManager.Events.JNDSEventsManager;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSAction;
 import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 
 /**
@@ -18,7 +17,7 @@ import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
  * @author Ilya Zemskov
  */
 public class JNDSButton extends JNDSAbstractComponent {
-    private JNDSActionImpl clickAction;
+    private JNDSAction clickAction;
     private String text = "";
     private int color = 0xFFFFFF;
     private int bgColor = 0x326690;
@@ -51,7 +50,7 @@ public class JNDSButton extends JNDSAbstractComponent {
         g.drawString(text, posX + PADDING_WIDTH, posY + fnt.getHeight());
     }
 
-    public void setClickAction(JNDSActionImpl clickAction) {
+    public void setClickAction(JNDSAction clickAction) {
         this.clickAction = clickAction;
     }
 

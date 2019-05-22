@@ -8,7 +8,7 @@ package ru.develgame.JNDSWindowsManager.Forms;
 
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
-import ru.develgame.JNDSWindowsManager.Actions.JNDSActionImpl;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSAction;
 import ru.develgame.JNDSWindowsManager.Components.JNDSButton;
 import ru.develgame.JNDSWindowsManager.Components.JNDSLabel;
 
@@ -99,22 +99,20 @@ public class JNDSKeyboardForm extends JNDSDialogForm {
         currentPosY += jndsButton.getHeight() + 1;
         currentPosX = LEFT_BORDER_X;
         JNDSButton jndsButtonOK = new JNDSButton("OK", currentPosX, currentPosY);
-        jndsButtonOK.setClickAction(new JNDSActionImpl() {
+        jndsButtonOK.setClickAction(new JNDSAction() {
             public void action() {
                 answer = true;
                 setVisible(false);
-                super.action();
             }
         });
         addComponent(jndsButtonOK);
 
         currentPosX += jndsButtonOK.getWidth() + 1;
         JNDSButton jndsButtonCancel = new JNDSButton("Cancel", currentPosX, currentPosY);
-        jndsButtonCancel.setClickAction(new JNDSActionImpl() {
+        jndsButtonCancel.setClickAction(new JNDSAction() {
             public void action() {
                 answer = false;
                 setVisible(false);
-                super.action();
             }
         });
         addComponent(jndsButtonCancel);
@@ -158,7 +156,7 @@ public class JNDSKeyboardForm extends JNDSDialogForm {
                 CURSOR_HEIGHT);
     }
 
-    private static class KeyClickAction extends JNDSActionImpl {
+    private static class KeyClickAction implements JNDSAction {
         private final String symbol;
         private final JNDSKeyboardForm jNDSKeyboardForm;
 
@@ -169,7 +167,6 @@ public class JNDSKeyboardForm extends JNDSDialogForm {
 
         public void action() {
             jNDSKeyboardForm.setText(jNDSKeyboardForm.getText() + symbol);
-            super.action();
         }
     }
 }

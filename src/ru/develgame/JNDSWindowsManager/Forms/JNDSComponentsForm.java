@@ -12,6 +12,7 @@ import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
 import ru.develgame.JNDSWindowsManager.Components.JNDSComponent;
+import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 
 /**
  *
@@ -39,6 +40,12 @@ public class JNDSComponentsForm implements JNDSForm {
     public void setVisible(boolean visible) {
         synchronized (this) {
             this.visible = visible;
+            if (visible)
+                JNDSWindowsManager.instance().addForm(this);
+            else
+                JNDSWindowsManager.instance().removeForm(this);
+
+            JNDSWindowsManager.instance().repaint();
         }
     }
 

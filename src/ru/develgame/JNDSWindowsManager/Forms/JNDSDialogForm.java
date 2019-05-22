@@ -18,9 +18,6 @@ public class JNDSDialogForm extends JNDSComponentsForm {
     }
 
     public void setVisible(boolean visible) {
-        if (visible)
-            System.out.println("Start visible");
-
         super.setVisible(visible);
 
         while (isVisible()) {
@@ -30,8 +27,5 @@ public class JNDSDialogForm extends JNDSComponentsForm {
             catch (InterruptedException ex) {
             }
         }
-
-        if (visible)
-            System.out.println("Stop visible");        
     }
 }
