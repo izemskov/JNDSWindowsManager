@@ -68,6 +68,7 @@ public class JNDSComponentsForm implements JNDSForm {
     }
 
     public void clickEvent(TouchPosition tp) {
+        //System.out.println("Client event");
         Enumeration elements = ndsComponents.elements();
         while (elements.hasMoreElements()) {
             JNDSComponent component = (JNDSComponent) elements.nextElement();

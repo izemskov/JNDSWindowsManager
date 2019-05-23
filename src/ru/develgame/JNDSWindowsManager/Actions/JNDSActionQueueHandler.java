@@ -15,6 +15,7 @@ import java.util.Vector;
  */
 public class JNDSActionQueueHandler implements Runnable {
     private Vector actionQueue = new Vector();
+    private JNDSActionThreadPool threadPool = new JNDSActionThreadPool();
 
     private boolean stop = false;
 
@@ -38,6 +39,7 @@ public class JNDSActionQueueHandler implements Runnable {
 
     public void addActionToQueue(JNDSAction action) {
         synchronized (this) {
+            //System.out.println("Add to queue");
             actionQueue.addElement(new JNDSActionWrapper(action));
         }
     }
@@ -70,13 +72,19 @@ public class JNDSActionQueueHandler implements Runnable {
                 }
                 else if (action.getActionProcessStatus() == ACTION_PROCESS_STATUS_WAIT) {
                     action.setActionStatus(ACTION_PROCESS_STATUS_START);
-                    new Thread(new Runnable() {
-                        public void run() {
-                            action.runAction();
-                        }
-                    }).start();
+                    //System.out.println("Process action");
+
+                    threadPool.runWork(action);
                 }
             }
+
+            try {
+                Thread.sleep(200);
+            }
+            catch (InterruptedException ex) {
+            }
         }
+
+        threadPool.stopThreads();
     }
 }

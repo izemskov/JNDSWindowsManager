@@ -33,9 +33,11 @@ public class JNDSActionWrapper {
     }
 
     public void runAction() {
+        //System.out.println("Run Action");
         action.action();
 
         setActionStatus(ru.develgame.JNDSWindowsManager.Actions.JNDSActionQueueHandler.ACTION_PROCESS_STATUS_FINISH);
+        //System.out.println("Need repaint");
         JNDSWindowsManager.instance().repaint();
     }
 }

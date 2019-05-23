@@ -18,4 +18,5 @@ public interface JNDSForm {
     void paint(NDSGraphics g, NDSFont fnt);
     void clickEvent(TouchPosition tp);
     boolean isVisible();
+    public void setVisible(boolean visible);
 }

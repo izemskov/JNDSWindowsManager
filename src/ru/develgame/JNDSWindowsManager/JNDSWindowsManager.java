@@ -79,6 +79,13 @@ public class JNDSWindowsManager {
             paint();
         }
 
+        Vector ndsFormsCopy = getNdsForms();
+        Enumeration elements = ndsFormsCopy.elements();
+        while (elements.hasMoreElements()) {
+            JNDSForm form = (JNDSForm) elements.nextElement();
+            form.setVisible(false);
+        }
+
         jndsActionQueueHandler.setStop(true);
         try {
             jndsActionQueueHandlerThread.join();
@@ -110,8 +117,8 @@ public class JNDSWindowsManager {
 
             Enumeration elements = ndsForms.elements();
             while (elements.hasMoreElements()) {
-                JNDSForm action = (JNDSForm) elements.nextElement();
-                vector.addElement(action);
+                JNDSForm form = (JNDSForm) elements.nextElement();
+                vector.addElement(form);
             }
 
             return vector;
@@ -145,7 +152,6 @@ public class JNDSWindowsManager {
     public void repaint() {
         synchronized (this) {
             needRepaint = true;
-            System.out.println("Need repaint");
         }
     }
 
@@ -157,7 +163,6 @@ public class JNDSWindowsManager {
 
     public void paint() {
         if (isNeedRepaint()) {
-            System.out.println("Repaint");
             g.setColor(0xFFFFFF);
             g.fillRect(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
 
