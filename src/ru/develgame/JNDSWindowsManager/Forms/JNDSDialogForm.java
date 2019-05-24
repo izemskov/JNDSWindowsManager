@@ -21,10 +21,12 @@ public class JNDSDialogForm extends JNDSComponentsForm {
         super.setVisible(visible);
 
         while (isVisible()) {
-            try {
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException ex) {
+            synchronized (this) {
+                try {
+                    wait();
+                }
+                catch (InterruptedException ex) {
+                }
             }
         }
     }

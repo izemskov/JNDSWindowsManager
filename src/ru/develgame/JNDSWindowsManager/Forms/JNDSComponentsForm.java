@@ -40,12 +40,15 @@ public class JNDSComponentsForm implements JNDSForm {
     public void setVisible(boolean visible) {
         synchronized (this) {
             this.visible = visible;
-            if (visible)
+            if (visible) {
                 JNDSWindowsManager.instance().addForm(this);
-            else
+                JNDSWindowsManager.instance().repaint();
+            }
+            else {
                 JNDSWindowsManager.instance().removeForm(this);
-
-            JNDSWindowsManager.instance().repaint();
+                JNDSWindowsManager.instance().repaint();
+                notify();
+            }
         }
     }
 

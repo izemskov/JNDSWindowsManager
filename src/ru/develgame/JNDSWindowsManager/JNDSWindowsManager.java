@@ -77,7 +77,15 @@ public class JNDSWindowsManager {
             keys = Key.held();
             Bios.swiWaitForVBlank();
             paint();
+
+            try {
+                Thread.sleep(25);
+            }
+            catch (InterruptedException ex) {
+            }
         }
+
+        System.out.println("Stop 1");
 
         Vector ndsFormsCopy = getNdsForms();
         Enumeration elements = ndsFormsCopy.elements();
@@ -86,6 +94,8 @@ public class JNDSWindowsManager {
             form.setVisible(false);
         }
 
+        System.out.println("Stop 2");
+
         jndsActionQueueHandler.setStop(true);
         try {
             jndsActionQueueHandlerThread.join();
@@ -93,6 +103,7 @@ public class JNDSWindowsManager {
         catch (InterruptedException ex) {
             System.out.println("Problem with stop action thread");
         }
+        System.out.println("Stop 3");
     }
 
     public void addActionToQueue(JNDSAction action) {

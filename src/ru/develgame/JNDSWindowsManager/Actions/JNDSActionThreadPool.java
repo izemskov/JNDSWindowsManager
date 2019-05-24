@@ -48,8 +48,8 @@ public class JNDSActionThreadPool {
         while (elements.hasMoreElements()) {
             JNDSActionThread actionThread = (JNDSActionThread) elements.nextElement();
             if (actionThread.getActionWrapper() == null) {
+                System.out.println("Wake up1");
                 actionThread.setActionWrapper(actionWrapper);
-                //System.out.println("Wake up1");
                 find = true;
                 break;
             }
@@ -59,6 +59,7 @@ public class JNDSActionThreadPool {
             JNDSActionThread actionThread = new JNDSActionThread();
             actionThread.start();
             threads.addElement(actionThread);
+            System.out.println("Wake up3");
             actionThread.setActionWrapper(actionWrapper);
         }
     }
@@ -76,12 +77,15 @@ public class JNDSActionThreadPool {
         public void setStop() {
             synchronized (this) {
                 stop = true;
+                notify();
             }
         }
 
         public void setActionWrapper(JNDSActionWrapper actionWrapper) {
             synchronized (this) {
                 this.actionWrapper = actionWrapper;
+                if (this.actionWrapper != null)
+                    notify();
             }
         }
 
@@ -99,21 +103,25 @@ public class JNDSActionThreadPool {
                 if (action != null)
                 {
                     if (action.getActionProcessStatus() == ru.develgame.JNDSWindowsManager.Actions.JNDSActionQueueHandler.ACTION_PROCESS_STATUS_START) {
-                        //System.out.println("Wake up2");
                         action.runAction();
                     }
-                    else
-                        setActionWrapper(null);
+
+                    setActionWrapper(null);
                 }
 
-                try {
-                    Thread.sleep(200);
+                synchronized (this) {
+                    System.out.println("Sleep...");
+                    try {
+                        wait();
+                    }
+                    catch (InterruptedException ex) {
+                    }
                 }
-                catch (InterruptedException ex) {
-                }
+
+                System.out.println("Wake up2");
             }
 
-            //System.out.println("Stop thread from pool");
+            System.out.println("Stop thread from pool");
         }
     }
 }
