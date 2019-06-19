@@ -9,6 +9,7 @@ package ru.develgame.JNDSWindowsManager.Forms;
 import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSAction;
 
 /**
  *
@@ -19,4 +20,5 @@ public interface JNDSForm {
     void clickEvent(TouchPosition tp);
     boolean isVisible();
     public void setVisible(boolean visible);
+    void addActionToQueue(JNDSAction action);
 }

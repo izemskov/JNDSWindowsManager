@@ -69,7 +69,7 @@ public class JNDSButton extends JNDSAbstractComponent {
 
     public void clickEvent(TouchPosition tp) {
         if (clickAction != null) {
-            JNDSWindowsManager.instance().addActionToQueue(clickAction);
+            parent.addActionToQueue(clickAction);
         }
     }
 

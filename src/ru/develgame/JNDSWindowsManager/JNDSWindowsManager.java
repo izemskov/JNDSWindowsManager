@@ -31,8 +31,6 @@ public class JNDSWindowsManager {
     private NDSGraphics g;
     private final NDSFont fnt = new NDSFont("system", 0, 12);
     private TouchPosition tp;
-    private JNDSActionQueueHandler jndsActionQueueHandler;
-    private Thread jndsActionQueueHandlerThread;
 
     private int lastTPx = 0;
     private int lastTPy = 0;
@@ -57,10 +55,6 @@ public class JNDSWindowsManager {
         g.fillRect(0, 0, MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT);
 
         tp = new TouchPosition();
-
-        jndsActionQueueHandler = new JNDSActionQueueHandler();
-        jndsActionQueueHandlerThread = new Thread(jndsActionQueueHandler);
-        jndsActionQueueHandlerThread.start();
 
         int keys  = Key.held();
         while ((keys & Key.START) == 0) {
@@ -95,19 +89,6 @@ public class JNDSWindowsManager {
         }
 
         System.out.println("Stop 2");
-
-        jndsActionQueueHandler.setStop(true);
-        try {
-            jndsActionQueueHandlerThread.join();
-        }
-        catch (InterruptedException ex) {
-            System.out.println("Problem with stop action thread");
-        }
-        System.out.println("Stop 3");
-    }
-
-    public void addActionToQueue(JNDSAction action) {
-        jndsActionQueueHandler.addActionToQueue(action);
     }
 
     public void addForm(JNDSForm ndsForm) {

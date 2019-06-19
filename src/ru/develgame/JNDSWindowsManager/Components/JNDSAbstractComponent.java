@@ -6,11 +6,14 @@
 
 package ru.develgame.JNDSWindowsManager.Components;
 
+import ru.develgame.JNDSWindowsManager.Forms.JNDSComponentsForm;
+
 /**
  *
  * @author Ilya Zemskov
  */
 public abstract class JNDSAbstractComponent implements JNDSComponent {
+    protected JNDSComponentsForm parent;
     protected int posX;
     protected int posY;
 
@@ -33,5 +36,9 @@ public abstract class JNDSAbstractComponent implements JNDSComponent {
 
     public void setPosY(int posY) {
         this.posY = posY;
+    }
+
+    public void setParent(JNDSComponentsForm parent) {
+        this.parent = parent;
     }
 }

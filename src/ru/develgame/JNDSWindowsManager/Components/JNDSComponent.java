@@ -9,6 +9,7 @@ package ru.develgame.JNDSWindowsManager.Components;
 import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
+import ru.develgame.JNDSWindowsManager.Forms.JNDSComponentsForm;
 
 /**
  *
@@ -18,4 +19,5 @@ public interface JNDSComponent {
     void paint(NDSGraphics g, NDSFont fnt);
     boolean isClicked(TouchPosition tp);
     void clickEvent(TouchPosition tp);
+    void setParent(JNDSComponentsForm parent);
 }

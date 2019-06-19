@@ -15,7 +15,6 @@ import java.util.Vector;
  */
 public class JNDSActionQueueHandler implements Runnable {
     private Vector actionQueue = new Vector();
-    private JNDSActionThreadPool threadPool = new JNDSActionThreadPool();
 
     private boolean stop = false;
 
@@ -76,7 +75,7 @@ public class JNDSActionQueueHandler implements Runnable {
                     action.setActionStatus(ACTION_PROCESS_STATUS_START);
                     System.out.println("Process action");
 
-                    threadPool.runWork(action);
+                    action.runAction();
                 }
             }
 
@@ -87,8 +86,8 @@ public class JNDSActionQueueHandler implements Runnable {
                 catch (InterruptedException ex) {
                 }
             }
-        }
 
-        threadPool.stopThreads();
+            System.out.println("Queue wake up");
+        }
     }
 }

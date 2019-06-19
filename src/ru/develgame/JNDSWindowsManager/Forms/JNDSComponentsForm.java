@@ -11,6 +11,8 @@ import java.util.Vector;
 import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSAction;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSActionQueueHandler;
 import ru.develgame.JNDSWindowsManager.Components.JNDSComponent;
 import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 
@@ -31,6 +33,14 @@ public class JNDSComponentsForm implements JNDSForm {
 
     protected boolean visible = false;
 
+    private JNDSActionQueueHandler jndsActionQueueHandler;
+    private Thread jndsActionQueueHandlerThread;
+
+    public JNDSComponentsForm() {
+        jndsActionQueueHandler = new JNDSActionQueueHandler();
+        jndsActionQueueHandlerThread = new Thread(jndsActionQueueHandler);
+    }
+
     public boolean isVisible() {
         synchronized (this) {
             return visible;
@@ -41,10 +51,15 @@ public class JNDSComponentsForm implements JNDSForm {
         synchronized (this) {
             this.visible = visible;
             if (visible) {
+                jndsActionQueueHandler.setStop(false);
+                jndsActionQueueHandlerThread.start();
+
                 JNDSWindowsManager.instance().addForm(this);
                 JNDSWindowsManager.instance().repaint();
             }
             else {
+                jndsActionQueueHandler.setStop(true);
+
                 JNDSWindowsManager.instance().removeForm(this);
                 JNDSWindowsManager.instance().repaint();
                 notify();
@@ -52,7 +67,12 @@ public class JNDSComponentsForm implements JNDSForm {
         }
     }
 
+    public void addActionToQueue(JNDSAction action) {
+        jndsActionQueueHandler.addActionToQueue(action);
+    }
+
     public void addComponent(JNDSComponent ndsComponent) {
+        ndsComponent.setParent(this);
         ndsComponents.addElement(ndsComponent);
     }
 

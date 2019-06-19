@@ -98,6 +98,16 @@ public class JNDSKeyboardForm extends JNDSDialogForm {
 
         currentPosY += jndsButton.getHeight() + 1;
         currentPosX = LEFT_BORDER_X;
+        JNDSButton jndsButtonSpace = new JNDSButton("Space", currentPosX, currentPosY);
+        jndsButtonSpace.setClickAction(new JNDSAction() {
+            public void action() {
+                setText(getText() + " ");
+            }
+        });
+        addComponent(jndsButtonSpace);
+
+        currentPosY += jndsButton.getHeight() + 1;
+        currentPosX = LEFT_BORDER_X;
         JNDSButton jndsButtonOK = new JNDSButton("OK", currentPosX, currentPosY);
         jndsButtonOK.setClickAction(new JNDSAction() {
             public void action() {
