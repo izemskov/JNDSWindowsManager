@@ -57,6 +57,15 @@ public class JNDSKeyboardForm extends JNDSDialogForm {
 
         addComponent(jndsButton);
 
+        JNDSButton jndsButtonBackSpace = new JNDSButton("BackSp", currentPosX, currentPosY);
+        jndsButtonBackSpace.setClickAction(new JNDSAction() {
+            public void action() {
+                if (getText().length() > 0)
+                    setText(getText().substring(0, getText().length() - 1));
+            }
+        });
+        addComponent(jndsButtonBackSpace);
+
         currentPosY += jndsButton.getHeight() + 1;
 
         // qwerty

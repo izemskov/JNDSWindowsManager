@@ -15,8 +15,6 @@ import nds.TouchPosition;
 import nds.Video;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
-import ru.develgame.JNDSWindowsManager.Actions.JNDSAction;
-import ru.develgame.JNDSWindowsManager.Actions.JNDSActionQueueHandler;
 
 /**
  *
@@ -37,8 +35,10 @@ public class JNDSWindowsManager {
 
     private boolean needRepaint = true;
 
-    public static final int MAX_SCREEN_WIDTH = 256;
+    public static final int MAX_SCREEN_WIDTH  = 256;
     public static final int MAX_SCREEN_HEIGHT = 192;
+
+    public static final int TOUCH_THRESHOLD = 2;
 
     public void run() {
         Video.lcdSwap();
@@ -117,8 +117,12 @@ public class JNDSWindowsManager {
         }
     }
 
+    private int square(int a) {
+        return a * a;
+    }
+
     public void touchEvents() {
-        if (lastTPx != tp.px || lastTPy != tp.py) {
+        if (square(tp.px - lastTPx) + square(tp.py - lastTPy) > square(TOUCH_THRESHOLD)) {
             Vector ndsFormsCopy = getNdsForms();
             if (!ndsFormsCopy.isEmpty()) {
                 for (int i = ndsFormsCopy.size() - 1; i >= 0; i--) {
