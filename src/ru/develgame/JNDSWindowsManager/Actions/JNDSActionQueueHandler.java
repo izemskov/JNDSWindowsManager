@@ -79,6 +79,9 @@ public class JNDSActionQueueHandler implements Runnable {
                 }
             }
 
+            if (isStop())
+                break;
+
             synchronized (this) {
                 try {
                     wait();
@@ -89,5 +92,7 @@ public class JNDSActionQueueHandler implements Runnable {
 
             System.out.println("Queue wake up");
         }
+
+        System.out.println("Queue end");
     }
 }

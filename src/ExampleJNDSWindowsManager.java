@@ -8,6 +8,7 @@ import ru.develgame.JNDSWindowsManager.Actions.JNDSAction;
 import ru.develgame.JNDSWindowsManager.Components.JNDSButton;
 import ru.develgame.JNDSWindowsManager.Components.JNDSLabel;
 import ru.develgame.JNDSWindowsManager.Forms.JNDSComponentsForm;
+import ru.develgame.JNDSWindowsManager.Forms.JNDSDialogForm;
 import ru.develgame.JNDSWindowsManager.Forms.JNDSKeyboardForm;
 import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 
@@ -22,19 +23,28 @@ public class ExampleJNDSWindowsManager {
         final JNDSLabel jndsLabel = new JNDSLabel("Hello world!", 100, 50);
         jNDSComponentsForm.addComponent(jndsLabel);
 
-        JNDSButton jndsButton = new JNDSButton("Test", 120, 100);
-        JNDSAction jndsActionImpl = new JNDSAction() {
+        JNDSButton jndsButtonDialogForm = new JNDSButton("Show dialog form", 120, 130);
+        JNDSAction jndsActionImplDialogForm = new JNDSAction() {
             public void action() {
-                JNDSKeyboardForm jndsKeyboardForm = new JNDSKeyboardForm("Write a text");
-                jndsKeyboardForm.setVisible(true);
-                if (jndsKeyboardForm.isAnswer()) {
-                    jndsLabel.setText(jndsKeyboardForm.getText());
-                }
+                final JNDSDialogForm jndsDialogForm = new JNDSDialogForm();
+
+                JNDSButton jndsButtonClose = new JNDSButton("Close", 10, 130);
+                jndsButtonClose.setClickAction(new JNDSAction() {
+                    public void action() {
+                        jndsDialogForm.setVisible(false);
+                    }
+                });
+                jndsDialogForm.addComponent(jndsButtonClose);
+
+                JNDSLabel jndsLabelDialogForm = new JNDSLabel("This is Dialog Form!", 100, 50);
+                jndsDialogForm.addComponent(jndsLabel);
+
+                jndsDialogForm.setVisible(true);
             }
         };
-        jndsButton.setClickAction(jndsActionImpl);
+        jndsButtonDialogForm.setClickAction(jndsActionImplDialogForm);
 
-        jNDSComponentsForm.addComponent(jndsButton);
+        jNDSComponentsForm.addComponent(jndsButtonDialogForm);
 
         jNDSComponentsForm.setVisible(true);
 
