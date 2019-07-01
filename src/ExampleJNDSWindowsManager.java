@@ -7,6 +7,7 @@
 import ru.develgame.JNDSWindowsManager.Actions.JNDSAction;
 import ru.develgame.JNDSWindowsManager.Components.JNDSButton;
 import ru.develgame.JNDSWindowsManager.Components.JNDSLabel;
+import ru.develgame.JNDSWindowsManager.Components.JNDSTextField;
 import ru.develgame.JNDSWindowsManager.Forms.JNDSComponentsForm;
 import ru.develgame.JNDSWindowsManager.Forms.JNDSDialogForm;
 import ru.develgame.JNDSWindowsManager.Forms.JNDSKeyboardForm;
@@ -19,6 +20,9 @@ import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 public class ExampleJNDSWindowsManager {
     public static void main(String[] args) {
         JNDSComponentsForm jNDSComponentsForm = new JNDSComponentsForm();
+
+        JNDSTextField jndsTextField = new JNDSTextField("Hello world", 50, 25, 150);
+        jNDSComponentsForm.addComponent(jndsTextField);
 
         final JNDSLabel jndsLabel = new JNDSLabel("Hello world!", 100, 50);
         jNDSComponentsForm.addComponent(jndsLabel);
