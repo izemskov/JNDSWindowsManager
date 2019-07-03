@@ -10,7 +10,6 @@ import ru.develgame.JNDSWindowsManager.Components.JNDSLabel;
 import ru.develgame.JNDSWindowsManager.Components.JNDSTextField;
 import ru.develgame.JNDSWindowsManager.Forms.JNDSComponentsForm;
 import ru.develgame.JNDSWindowsManager.Forms.JNDSDialogForm;
-import ru.develgame.JNDSWindowsManager.Forms.JNDSKeyboardForm;
 import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
 
 /**
@@ -21,13 +20,13 @@ public class ExampleJNDSWindowsManager {
     public static void main(String[] args) {
         JNDSComponentsForm jNDSComponentsForm = new JNDSComponentsForm();
 
-        JNDSTextField jndsTextField = new JNDSTextField("Hello world", 50, 25, 150);
-        jNDSComponentsForm.addComponent(jndsTextField);
-
-        final JNDSLabel jndsLabel = new JNDSLabel("Hello world!", 100, 50);
+        final JNDSLabel jndsLabel = new JNDSLabel("Simple label", 20, 30);
         jNDSComponentsForm.addComponent(jndsLabel);
 
-        JNDSButton jndsButtonDialogForm = new JNDSButton("Show dialog form", 120, 130);
+        JNDSTextField jndsTextField = new JNDSTextField("Hello world", 20, 58, 150);
+        jNDSComponentsForm.addComponent(jndsTextField);
+
+        JNDSButton jndsButtonDialogForm = new JNDSButton("Show dialog form", 20, 90);
         JNDSAction jndsActionImplDialogForm = new JNDSAction() {
             public void action() {
                 final JNDSDialogForm jndsDialogForm = new JNDSDialogForm();
@@ -40,8 +39,8 @@ public class ExampleJNDSWindowsManager {
                 });
                 jndsDialogForm.addComponent(jndsButtonClose);
 
-                JNDSLabel jndsLabelDialogForm = new JNDSLabel("This is Dialog Form!", 100, 50);
-                jndsDialogForm.addComponent(jndsLabel);
+                JNDSLabel jndsLabelDialogForm = new JNDSLabel("This is Dialog Form!", 70, 80);
+                jndsDialogForm.addComponent(jndsLabelDialogForm);
 
                 jndsDialogForm.setVisible(true);
             }

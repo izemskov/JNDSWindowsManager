@@ -9,6 +9,8 @@ package ru.develgame.JNDSWindowsManager.Components;
 import nds.TouchPosition;
 import nds.pstros.video.NDSFont;
 import nds.pstros.video.NDSGraphics;
+import ru.develgame.JNDSWindowsManager.Actions.JNDSAction;
+import ru.develgame.JNDSWindowsManager.Forms.JNDSKeyboardForm;
 
 /**
  *
@@ -23,7 +25,7 @@ public class JNDSTextField extends JNDSAbstractComponent {
     private int color = 0x000000;
 
     private static final int PADDING_WIDTH = 5;
-    private static final int PADDING_HEIGHT = 3;
+    private static final int PADDING_HEIGHT = 2;
 
     public JNDSTextField(String text, int posX, int posY, int width) {
         super(posX, posY);
@@ -54,6 +56,14 @@ public class JNDSTextField extends JNDSAbstractComponent {
     }
 
     public void clickEvent(TouchPosition tp) {
-
+        parent.addActionToQueue(new JNDSAction() {
+            public void action() {
+                JNDSKeyboardForm jndsKeyboardForm = new JNDSKeyboardForm(text);
+                jndsKeyboardForm.setVisible(true);
+                if (jndsKeyboardForm.isAnswer()) {
+                    text = jndsKeyboardForm.getText();
+                }
+            }
+        });
     }
 }
