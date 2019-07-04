@@ -22,11 +22,13 @@ public class JNDSKeyboardForm extends JNDSDialogForm {
     private int cursorPos = 0;
 
     private static final int LEFT_BORDER_X = 10;
-    private static final int TOP_BORDER_Y = 20;
+    private static final int TOP_BORDER_Y = 25;
     private static final int CURSOR_HEIGHT = 2;
     private static final int MAX_TEXT_LENGTH = 34;
 
     public JNDSKeyboardForm(String lText) {
+        title = "Keyboard";
+
         if (lText != null)
             text[0] = lText;
         else

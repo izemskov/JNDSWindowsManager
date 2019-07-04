@@ -21,7 +21,7 @@ import ru.develgame.JNDSWindowsManager.JNDSWindowsManager;
  * @author Ilya Zemskov
  */
 public class JNDSComponentsForm implements JNDSForm {
-    public static final int FORM_TITLE_PANEL_HEIGHT = 20;
+    public static final int FORM_TITLE_PANEL_HEIGHT = 22;
     public static final int FORM_TITLE_PANEL_BGCOLOR = 0x326690;
 
     public static final int FORM_POSX = 2;
@@ -29,12 +29,16 @@ public class JNDSComponentsForm implements JNDSForm {
     public static final int FORM_WIDTH = 250;
     public static final int FORM_HEIGHT = 185;
 
+    private static final int PADDING_TITLE_WIDTH = 5;
+
     protected final Vector ndsComponents = new Vector();
 
     protected boolean visible = false;
 
     private JNDSActionQueueHandler jndsActionQueueHandler;
     private Thread jndsActionQueueHandlerThread;
+
+    protected String title;
 
     public JNDSComponentsForm() {
         jndsActionQueueHandler = new JNDSActionQueueHandler();
@@ -67,6 +71,14 @@ public class JNDSComponentsForm implements JNDSForm {
         }
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public void addActionToQueue(JNDSAction action) {
         jndsActionQueueHandler.addActionToQueue(action);
     }
@@ -82,6 +94,11 @@ public class JNDSComponentsForm implements JNDSForm {
 
         g.setColor(FORM_TITLE_PANEL_BGCOLOR);
         g.fillRect(FORM_POSX + 1, FORM_POSY + 1, FORM_WIDTH - 1, FORM_TITLE_PANEL_HEIGHT);
+
+        if (title != null && title.length() > 0) {
+            g.setColor(0xFFFFFF);
+            g.drawString(title, FORM_POSX + 1 + PADDING_TITLE_WIDTH, FORM_POSY + 1 + fnt.getHeight());
+        }
 
         Enumeration elements = ndsComponents.elements();
         while (elements.hasMoreElements()) {
