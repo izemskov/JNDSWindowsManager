@@ -21,7 +21,7 @@ public class JNDSTextField extends JNDSAbstractComponent {
     private int width;
     private int height;
 
-    private int bgColor = 0x326690;
+    private int bgColor = 0x73a6ce;
     private int color = 0x000000;
 
     private static final int PADDING_WIDTH = 5;
