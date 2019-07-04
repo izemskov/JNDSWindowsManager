@@ -38,7 +38,6 @@ public class JNDSActionQueueHandler implements Runnable {
 
     public void addActionToQueue(JNDSAction action) {
         synchronized (this) {
-            System.out.println("Add to queue");
             actionQueue.addElement(new JNDSActionWrapper(action));
             notify();
         }
@@ -73,8 +72,6 @@ public class JNDSActionQueueHandler implements Runnable {
                 }
                 else if (action.getActionProcessStatus() == ACTION_PROCESS_STATUS_WAIT) {
                     action.setActionStatus(ACTION_PROCESS_STATUS_START);
-                    System.out.println("Process action");
-
                     action.runAction();
                 }
             }
@@ -89,10 +86,6 @@ public class JNDSActionQueueHandler implements Runnable {
                 catch (InterruptedException ex) {
                 }
             }
-
-            System.out.println("Queue wake up");
         }
-
-        System.out.println("Queue end");
     }
 }

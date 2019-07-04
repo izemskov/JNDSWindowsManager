@@ -79,16 +79,12 @@ public class JNDSWindowsManager {
             }
         }
 
-        System.out.println("Stop 1");
-
         Vector ndsFormsCopy = getNdsForms();
         Enumeration elements = ndsFormsCopy.elements();
         while (elements.hasMoreElements()) {
             JNDSForm form = (JNDSForm) elements.nextElement();
             form.setVisible(false);
         }
-
-        System.out.println("Stop 2");
     }
 
     public void addForm(JNDSForm ndsForm) {
