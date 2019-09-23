@@ -38,7 +38,7 @@ public class JNDSWindowsManager {
     public static final int MAX_SCREEN_WIDTH  = 256;
     public static final int MAX_SCREEN_HEIGHT = 192;
 
-    public static final int TOUCH_THRESHOLD = 2;
+    public static final int TOUCH_THRESHOLD = 20;
 
     public void run() {
         Video.lcdSwap();
